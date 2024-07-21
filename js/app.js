@@ -1,8 +1,11 @@
-// Variables
+
 const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
 const listaCursos = document.querySelector('#lista-cursos');
+
+// Donde se almacenara los productos
+let articulosCarrito = []
 
 
 cargarEventListeners()
@@ -23,10 +26,8 @@ function agregarCurso(e) {
 
 }
 
-// Lee el contenido  del HTML al que le dimos  click y extrae la info del curso
 function leerDatosCurso(curso) {
 
-  // Creamos un obejeto con el contenido del curso actual.
   const infoCurso = {
     id: curso.querySelector('a').getAttribute('data-id'),
     imagen: curso.querySelector('img').src,
@@ -35,19 +36,65 @@ function leerDatosCurso(curso) {
     cantidad: 1
   }
 
-  // Voy viendo como se va construyendo mi objeto
-  console.log(infoCurso);
+  // Agrega elementos al arreglo de carrito
+  // articulosCarrito.push(infoCurso) // puede hacerse tambien
+  articulosCarrito = [infoCurso, ...articulosCarrito] // Ultimo seleccionado, primero en mostrarse
+
+  // Lo inyectamos en el HTML
+  carritoHTML()
+}
+
+
+// Mostrando los articulos seleccionados en el HTML
+function carritoHTML() {
+
+  // Limpiamos lo que hay en el array
+  limpiarHTML()
+
+  // Iteramos por cada articulo que hay dentro del array carrito
+  articulosCarrito.forEach(articulo => {
+    const row = document.createElement('TR')
+
+    row.innerHTML = `
+      <td>
+        <img src="${articulo.imagen}" width="100" />
+      </td>
+      <td>${articulo.titulo}</td>
+      <td>${articulo.precio}</td>
+      <td>${articulo.cantidad}</td>
+    `
+    // Inyectamos el HTML en <tbody>
+    contenedorCarrito.appendChild(row)
+    // console.log(articulo);
+  })
+
+}
+
+// Limpindo el HTML
+function limpiarHTML() {
+  //La manera lenta 
+  contenedorCarrito.innerHTML = ''
+
+  // Con mejor performance
+  while (contenedorCarrito.firstChild) {
+    contenedorCarrito.removeChild(contenedorCarrito.firstChild)
+  }
 }
 
 
 
+
+
 /** Comentarios extras:
- * 1.- Una vez más, como buenas practicas tu funcion debe hacer una sola cosas, separa la logica y dividela en otras funciones.
- *
- * 2.- A la hora de manipular la información que vamos a mostrar en el carrito, o simplemente manipularla, la mejor opción es almancenarla en el un objeto) 
+ * 1.- Ya con mi objeto creado, la idea es ir alamacenarlo en algun lugar y que estes se muestre posteriormente donde deba mostrarse y la mejor opción es guardarlo en un array.
  * 
- * 3.- Todo objeto debe ser unico, por lo tando debes incorporar el id atu objeto utilizando el atributo que ya esta definido en el HTML
+ * 2.- Usamos el Spread operator, pudimos usar .push, pero para ir con las actulizaciones de java.
  * 
- * 4.- Debes ir probando cada información suministrada en el objeto. *  
-  
+ * 3.- Seguimos con el principio unico de las funciones, en esta oportunidad creamos otra funcion que se encargará de crear el HTML y mostrarlo en la app.
+ * 
+ * 4.- A la hora de mostrar los cursos en el HTML debemos inyectarlos dentro del elemento "tbody", ya en el diseño pre-establecido, para esto un elemento "tr", cae perfecto por cada columna que tiene la tabla.
+ * 
+ * 5.- Ya resuelto lo anterior y por el uso del appendChild, se nos esta duplicando la información en el array y por obvias razones en el HTML tambien, para esto debemos limpiar el HTML, previo a una incorporación nueva, nueva logica, hay que separlo de esta función y hacer una nueva.
+ * 
+ * 6.- 
 */
