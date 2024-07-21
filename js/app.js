@@ -5,13 +5,9 @@ const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
 const listaCursos = document.querySelector('#lista-cursos');
 
 
-// Este console, me sirvio para ir probando que estaba aputando al selector correcto
-// console.log(vaciarCarritoBtn);
-
 cargarEventListeners()
 
 function cargarEventListeners() {
-  // Cuando agregas un curso presionando "Agregar al Carrito"
   listaCursos.addEventListener('click', agregarCurso)
 
 }
@@ -19,28 +15,39 @@ function cargarEventListeners() {
 function agregarCurso(e) {
   e.preventDefault()
 
-  // Aplicamos Event bubbling por delegation
   if (e.target.classList.contains('agregar-carrito')) {
+    const cursoSeleccionado = e.target.parentElement.parentElement
 
-    // clg, que me permite ir viendo hasta donde quiero enmarcar mi target
-    console.log(e.target.parentElement.parentElement);
+    leerDatosCurso(cursoSeleccionado);
   }
 
+}
+
+// Lee el contenido  del HTML al que le dimos  click y extrae la info del curso
+function leerDatosCurso(curso) {
+
+  // Creamos un obejeto con el contenido del curso actual.
+  const infoCurso = {
+    id: curso.querySelector('a').getAttribute('data-id'),
+    imagen: curso.querySelector('img').src,
+    titulo: curso.querySelector('h4').textContent,
+    precio: curso.querySelector('.precio span').textContent,
+    cantidad: 1
+  }
+
+  // Voy viendo como se va construyendo mi objeto
+  console.log(infoCurso);
 }
 
 
 
 /** Comentarios extras:
- * 
- * 1.- la mayoria de los selectores de los elementos los declaras con "const"
- * 
- * 2.- Deberias ir seleccionando tus variables de acuerdo los elementos involucrados y un orden, es decir, estamos trabajando con el carrito (es tu todo), luego los elementos mas pequeños, como botones, articulos, etc.
- * 
- * 3.- En vista que estaremos trabajando desde el primer proyecto con eventos, una buena practica, es declar todos los enventos dentro de una funcion, y asi no queda en la ventana global del proyecto y obvio que se llama esa función, digamos que es la primera en llamarse.
+ * 1.- Una vez más, como buenas practicas tu funcion debe hacer una sola cosas, separa la logica y dividela en otras funciones.
  *
- * 4.- Otra buena practica, es que en el desarrollo de los Events, el segundo parametro, solo sea el nombre de la función y fuera de esta la desarrolles 
+ * 2.- A la hora de manipular la información que vamos a mostrar en el carrito, o simplemente manipularla, la mejor opción es almancenarla en el un objeto) 
  * 
- * 5.- Como te pudiste dar cuenta, al momento de dar click al boton de "Agregar al Carrito", hace un algo insesperado, por eso le pasamos el "preventDefault()", ya que como es un link ("a"); contien un atributo (href="#"), te genera ese evento inesperado; asi como tambien que no esta direccionado al boton exactamento el evento, ya que si le das click a cualquier parte del card, este dispara el clg de prueba que tenemos, en este caso incluimos el Event Bubbling por delegation
+ * 3.- Todo objeto debe ser unico, por lo tando debes incorporar el id atu objeto utilizando el atributo que ya esta definido en el HTML
  * 
- * 6.- Una vez controlado la propagacion de donde quiero hacer click y que me traiga el elemento deseado, iniciamos a trabajar con el Traversing, no es más que navegar entre elementos, para arriba con "parentElement"
- */
+ * 4.- Debes ir probando cada información suministrada en el objeto. *  
+  
+*/
