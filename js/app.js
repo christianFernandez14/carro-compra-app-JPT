@@ -11,8 +11,17 @@ cargarEventListeners()
 function cargarEventListeners() {
   listaCursos.addEventListener('click', agregarCurso)
 
-  // Elimina curso del carrito
   carrito.addEventListener('click', eliminarArticulo)
+
+  // Vaciendo el carrito 
+  vaciarCarritoBtn.addEventListener('click', () => {
+    // Probando que estamos escuchando el elemento deseado
+    // console.log('Vaciando Carrito...');
+
+    articulosCarrito = [] // reiniciamos el arreglo
+
+    limpiarHTML() // reiniciamos el HTML
+  })
 
 }
 
@@ -27,20 +36,13 @@ function agregarCurso(e) {
 
 }
 
-// Eliminando curso dl carrito
 function eliminarArticulo(e) {
-  // haciendo pruebas de estamos con el elemento correcto
-  // console.log('Eliminando el articulo...');
+
   if (e.target.classList.contains('borrar-curso')) {
     const articuloId = e.target.getAttribute('data-id')
 
-    // Elimina del arreglo de arregloCarrito, por el data-id
     articulosCarrito = articulosCarrito.filter(articulo => articulo.id !== articuloId)
 
-    // Aca voy viendo como queda mi arreglo articuloCarrito
-    // console.log(articulosCarrito);
-
-    // Hasta aqui solo en manipulado el arrar debo mostrar lo que queda en el.
     carritoHTML()
   }
 }
@@ -113,13 +115,8 @@ function limpiarHTML() {
 
 
 
-
-
 /** Comentarios extras:
- * 1.- Ahora trabajando con la funcionalidad de elimando, especificamente eliminando un articulos, nos percatamos que el selector utizado es todo el div o tbody mas bien, aca para solucionarlo, debes trabajar con el event bubbling.
- * 
- * 2.- La mejor opcion para trabajar con DELETE, es iterar con un filter, prueba mas adelante, agregando otro filter, donde guarde el articulo eliminado y luedo te lo muestre más adelante; seria una muy buena practica de HTML, Css y Js
- * 
+ * 1.- Viendo que esta funcion es poco codigo, lo hacemos en el mismo event
  * 
  * 
  * 
