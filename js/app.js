@@ -1,6 +1,5 @@
 
 let articulosCarrito = []
-
 const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
@@ -13,21 +12,16 @@ function cargarEventListeners() {
 
   carrito.addEventListener('click', eliminarArticulo)
 
-  // Vaciendo el carrito 
   vaciarCarritoBtn.addEventListener('click', () => {
-    // Probando que estamos escuchando el elemento deseado
-    // console.log('Vaciando Carrito...');
+    articulosCarrito = []
+    limpiarHTML()
 
-    articulosCarrito = [] // reiniciamos el arreglo
-
-    limpiarHTML() // reiniciamos el HTML
   })
 
 }
 
 function agregarCurso(e) {
   e.preventDefault()
-
   if (e.target.classList.contains('agregar-carrito')) {
     const cursoSeleccionado = e.target.parentElement.parentElement
 
@@ -37,7 +31,6 @@ function agregarCurso(e) {
 }
 
 function eliminarArticulo(e) {
-
   if (e.target.classList.contains('borrar-curso')) {
     const articuloId = e.target.getAttribute('data-id')
 
@@ -48,7 +41,6 @@ function eliminarArticulo(e) {
 }
 
 function leerDatosCurso(curso) {
-
   const infoCurso = {
     id: curso.querySelector('a').getAttribute('data-id'),
     imagen: curso.querySelector('img').src,
@@ -82,7 +74,6 @@ function leerDatosCurso(curso) {
 }
 
 function carritoHTML() {
-
   limpiarHTML()
 
   articulosCarrito.forEach(articulo => {
@@ -102,23 +93,15 @@ function carritoHTML() {
       </td>
     `
     contenedorCarrito.appendChild(row)
+
   })
 
 }
 
 function limpiarHTML() {
-
   while (contenedorCarrito.firstChild) {
     contenedorCarrito.removeChild(contenedorCarrito.firstChild)
   }
 }
 
 
-
-/** Comentarios extras:
- * 1.- Viendo que esta funcion es poco codigo, lo hacemos en el mismo event
- * 
- * 
- * 
- * 
-*/
