@@ -34,7 +34,30 @@ function leerDatosCurso(curso) {
     cantidad: 1
   }
 
-  articulosCarrito = [infoCurso, ...articulosCarrito]
+  // Revisamos si un articulo ya existe en el carrito
+  const articuloExiste = articulosCarrito.some(articulo => (articulo.id === infoCurso.id))
+
+  console.log(articuloExiste); // Me retorna un bool
+
+  if (articuloExiste) {
+    // Actulizamos la cantidad
+    const articulos = articulosCarrito.map(articulo => {
+
+      if (articulo.id === infoCurso.id) {
+        articulo.cantidad++
+        return articulo // Retorna el objeto actulizado
+
+      } else {
+        return articulo // retorna los objetos que no son duplicados
+      }
+    })
+
+    articulosCarrito = [...articulos]
+  } else {
+    // Agregamos por primera vez el articulo
+    articulosCarrito = [infoCurso, ...articulosCarrito]
+
+  }
 
   carritoHTML()
 }
@@ -76,9 +99,11 @@ function limpiarHTML() {
 
 
 /** Comentarios extras:
- * 1.- Agregamos una propiedad más que esta asociada al boton del elminar un curso (enlance)
+ * 1.- En este caso estamos trabajando con la columna de cantidad, ya que si agregas el mismo artiuculo, n-veces, este se agrega y no es la idea
  * 
- * 2.- Viendo que nuestro codigo puede optimizarse mas, aplicamos destructuring a cada articulo.
+ * 2.- utilizamos un iterador de los array, como lo es el some, ya que me permite verificar si alguno cumple una condicion y te retorna un boll
+ * 
+ * 3.- Luego de esto, utilizamos el resultado del some, para aumentar la propiedad de la cantidad o agregar el articulo como primera vez.
  * 
  * 
 */
