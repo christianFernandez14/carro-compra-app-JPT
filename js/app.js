@@ -11,6 +11,9 @@ cargarEventListeners()
 function cargarEventListeners() {
   listaCursos.addEventListener('click', agregarCurso)
 
+  // Elimina curso del carrito
+  carrito.addEventListener('click', eliminarArticulo)
+
 }
 
 function agregarCurso(e) {
@@ -24,6 +27,24 @@ function agregarCurso(e) {
 
 }
 
+// Eliminando curso dl carrito
+function eliminarArticulo(e) {
+  // haciendo pruebas de estamos con el elemento correcto
+  // console.log('Eliminando el articulo...');
+  if (e.target.classList.contains('borrar-curso')) {
+    const articuloId = e.target.getAttribute('data-id')
+
+    // Elimina del arreglo de arregloCarrito, por el data-id
+    articulosCarrito = articulosCarrito.filter(articulo => articulo.id !== articuloId)
+
+    // Aca voy viendo como queda mi arreglo articuloCarrito
+    // console.log(articulosCarrito);
+
+    // Hasta aqui solo en manipulado el arrar debo mostrar lo que queda en el.
+    carritoHTML()
+  }
+}
+
 function leerDatosCurso(curso) {
 
   const infoCurso = {
@@ -34,27 +55,23 @@ function leerDatosCurso(curso) {
     cantidad: 1
   }
 
-  // Revisamos si un articulo ya existe en el carrito
   const articuloExiste = articulosCarrito.some(articulo => (articulo.id === infoCurso.id))
 
-  console.log(articuloExiste); // Me retorna un bool
-
   if (articuloExiste) {
-    // Actulizamos la cantidad
+
     const articulos = articulosCarrito.map(articulo => {
 
       if (articulo.id === infoCurso.id) {
         articulo.cantidad++
-        return articulo // Retorna el objeto actulizado
+        return articulo
 
       } else {
-        return articulo // retorna los objetos que no son duplicados
+        return articulo
       }
     })
 
     articulosCarrito = [...articulos]
   } else {
-    // Agregamos por primera vez el articulo
     articulosCarrito = [infoCurso, ...articulosCarrito]
 
   }
@@ -99,11 +116,12 @@ function limpiarHTML() {
 
 
 /** Comentarios extras:
- * 1.- En este caso estamos trabajando con la columna de cantidad, ya que si agregas el mismo artiuculo, n-veces, este se agrega y no es la idea
+ * 1.- Ahora trabajando con la funcionalidad de elimando, especificamente eliminando un articulos, nos percatamos que el selector utizado es todo el div o tbody mas bien, aca para solucionarlo, debes trabajar con el event bubbling.
  * 
- * 2.- utilizamos un iterador de los array, como lo es el some, ya que me permite verificar si alguno cumple una condicion y te retorna un boll
+ * 2.- La mejor opcion para trabajar con DELETE, es iterar con un filter, prueba mas adelante, agregando otro filter, donde guarde el articulo eliminado y luedo te lo muestre más adelante; seria una muy buena practica de HTML, Css y Js
  * 
- * 3.- Luego de esto, utilizamos el resultado del some, para aumentar la propiedad de la cantidad o agregar el articulo como primera vez.
+ * 
+ * 
  * 
  * 
 */
